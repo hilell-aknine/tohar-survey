@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>איפה העסק שלך באמת עומד? · טוהר אקנין</title>
+<meta name="description" content="7 שאלות קצרות שיגלו לך מה באמת עוצר את העסק שלך, ומה הצעד הבא.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#E9E1D5;          /* page background, matched to the logo */
+    --cream-deep:#DFD5C5;
+    --card:#F8F4EC;
+    --bronze:#977E62;
+    --bronze-dark:#6B5640;
+    --bronze-deep:#54422F;
+    --ink:#332A21;
+    --ink-soft:#6d6052;
+    --line:#D5C9B6;
+    --ok:#5E7A57;
+    --err:#A05441;
+    --radius:18px;
+    --shadow:0 10px 30px rgba(107,86,64,.12), 0 2px 8px rgba(107,86,64,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Heebo',sans-serif;
+    background:var(--cream);
+    background-image:radial-gradient(ellipse at 50% -10%, #F1EADF 0%, var(--cream) 55%);
+    color:var(--ink);
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .wrap{
+    width:100%;
+    max-width:560px;
+    padding:20px 20px 40px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+  }
+  /* ---------- header ---------- */
+  header{text-align:center;padding-top:6px}
+  .logo{
+    width:170px;height:auto;
+    user-select:none;
+    transition:width .4s ease;
+  }
+  .logo.small{width:96px}
+  /* ---------- screens ---------- */
+  .screen{display:none;animation:fadeUp .5s ease both}
+  .screen.active{display:block}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){
+    .screen{animation:none}
+  }
+  h1,h2,.serif{font-family:'Frank Ruhl Libre','Heebo',serif}
+  /* ---------- intro ---------- */
+  #intro{text-align:center;padding-top:18px}
+  .eyebrow{
+    display:inline-block;
+    letter-spacing:.22em;
+    font-size:.72rem;
+    font-weight:500;
+    color:var(--bronze);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .eyebrow::before,.eyebrow::after{content:"·";margin:0 10px;color:var(--bronze)}
+  #intro h1{
+    font-size:1.9rem;
+    font-weight:700;
+    color:var(--bronze-deep);
+    line-height:1.3;
+    margin-bottom:14px;
+  }
+  #intro p{
+    color:var(--ink-soft);
+    font-size:1.05rem;
+    line-height:1.7;
+    max-width:420px;
+    margin:0 auto 30px;
+  }
+  .btn{
+    font-family:'Heebo',sans-serif;
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:linear-gradient(135deg, var(--bronze) 0%, var(--bronze-dark) 100%);
+    color:#FBF8F2;
+    border:none;border-radius:999px;
+    padding:16px 44px;
+    font-size:1.08rem;font-weight:500;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    transition:transform .15s ease, box-shadow .15s ease, opacity .15s;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(107,86,64,.2)}
+  .btn:active{transform:translateY(0)}
+  .btn:disabled{opacity:.55;cursor:wait;transform:none}
+  .btn:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--bronze);outline-offset:3px}
+  .hint{margin-top:16px;font-size:.85rem;color:var(--ink-soft)}
+  /* ---------- quiz ---------- */
+  .progress-row{
+    display:flex;align-items:center;gap:14px;
+    margin:20px 0 22px;
+  }
+  .progress-track{
+    flex:1;height:6px;border-radius:99px;
+    background:var(--cream-deep);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;width:0;
+    border-radius:99px;
+    background:linear-gradient(90deg, var(--bronze), var(--bronze-dark));
+    transition:width .45s cubic-bezier(.4,0,.2,1);
+  }
+  .progress-label{
+    font-size:.82rem;color:var(--bronze-dark);font-weight:500;white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
+  .q-title{
+    font-size:1.45rem;
+    font-weight:700;
+    color:var(--bronze-deep);
+    line-height:1.4;
+    margin-bottom:20px;
+    min-height:2.2em;
+  }
+  .options{display:flex;flex-direction:column;gap:12px;list-style:none}
+  .opt{
+    display:flex;align-items:center;gap:14px;
+    width:100%;text-align:right;
+    background:var(--card);
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    font-family:'Heebo',sans-serif;
+    font-size:1.02rem;color:var(--ink);
+    line-height:1.5;
+    cursor:pointer;
+    transition:border-color .15s, background .15s, transform .12s;
+  }
+  .opt:hover{border-color:var(--bronze);transform:translateX(-3px)}
+  .opt .badge{
+    flex:0 0 34px;height:34px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:50%;
+    border:1.5px solid var(--bronze);
+    color:var(--bronze-dark);
+    font-family:'Frank Ruhl Libre',serif;
+    font-weight:700;font-size:.95rem;
+    transition:background .15s,color .15s;
+  }
+  .opt.selected{
+    background:#F1E9DC;
+    border-color:var(--bronze-dark);
+  }
+  .opt.selected .badge{background:var(--bronze-dark);color:#FBF8F2;border-color:var(--bronze-dark)}
+  .back-row{margin-top:22px;text-align:center;min-height:28px}
+  .link-btn{
+    background:none;border:none;cursor:pointer;
+    font-family:'Heebo',sans-serif;
+    color:var(--ink-soft);font-size:.9rem;
+    border-bottom:1px solid transparent;
+    padding:2px 0;
+  }
+  .link-btn:hover{color:var(--bronze-dark);border-bottom-color:var(--bronze-dark)}
+  /* ---------- result ---------- */
+  #result{text-align:center;padding-top:8px}
+  .result-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:34px 26px 30px;
+    margin-top:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .result-card::before{
+    content:"";
+    position:absolute;inset:0 0 auto 0;height:4px;
+    background:linear-gradient(90deg, transparent, var(--bronze), transparent);
+  }
+  .result-eyebrow{
+    letter-spacing:.2em;font-size:.7rem;font-weight:500;
+    color:var(--bronze);margin-bottom:16px;display:block;
+  }
+  .result-text{
+    font-family:'Frank Ruhl Libre',serif;
+    font-size:1.3rem;line-height:1.65;
+    color:var(--bronze-deep);
+    font-weight:500;
+  }
+  .divider{
+    width:64px;height:1.5px;margin:24px auto;
+    background:linear-gradient(90deg, transparent, var(--bronze), transparent);
+  }
+  .cta-text{
+    color:var(--ink-soft);
+    font-size:1.02rem;line-height:1.7;
+    margin-bottom:22px;
+  }
+  .cta-text strong{color:var(--bronze-dark);font-weight:500}
+  form{display:flex;flex-direction:column;gap:12px;text-align:right}
+  label{font-size:.88rem;color:var(--bronze-dark);font-weight:500;margin-bottom:-6px}
+  input[type=text],input[type=tel]{
+    font-family:'Heebo',sans-serif;
+    font-size:16px; /* prevents iOS zoom */
+    padding:14px 16px;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    background:#FCFAF5;
+    color:var(--ink);
+    width:100%;
+    transition:border-color .15s;
+  }
+  input[type=text]:focus,input[type=tel]:focus{border-color:var(--bronze);outline:none}
+  .hp{position:absolute;right:-9999px;top:-9999px;height:0;width:0;opacity:0;pointer-events:none}
+  .form-status{min-height:22px;font-size:.9rem;text-align:center}
+  .form-status.err{color:var(--err)}
+  .form-status.ok{color:var(--ok)}
+  /* ---------- thanks ---------- */
+  #thanks{text-align:center;padding-top:30px}
+  .check{
+    width:74px;height:74px;margin:0 auto 22px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--bronze), var(--bronze-dark));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow);
+    animation:pop .5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+  .check svg{width:34px;height:34px;stroke:#FBF8F2;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  #thanks h2{font-size:1.6rem;color:var(--bronze-deep);margin-bottom:12px}
+  #thanks p{color:var(--ink-soft);line-height:1.7;max-width:380px;margin:0 auto}
+  /* ---------- footer ---------- */
+  footer{
+    text-align:center;
+    padding:18px 0 26px;
+    font-size:.78rem;
+    color:#9b8d7c;
+  }
+  footer a{color:inherit;text-decoration:none}
+  @media (max-width:380px){
+    #intro h1{font-size:1.6rem}
+    .q-title{font-size:1.25rem}
+    .opt{padding:14px 14px;font-size:.97rem}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="logo.png" alt="טוהר אקנין · תהליכי שיווק" class="logo" id="logoImg">
+  </header>
+
+  <!-- ========== INTRO ========== -->
+  <section class="screen active" id="intro" aria-label="פתיחה">
+    <span class="eyebrow">סקר קצר לבעלות עסק</span>
+    <h1>איפה העסק שלך<br>באמת עומד היום?</h1>
+    <p>7 שאלות קצרות, פחות מדקה.<br>בסוף תקבלי תמונת מצב מדויקת על מה שבאמת עוצר את העסק שלך, ומה הצעד הבא.</p>
+    <button class="btn" id="startBtn">בואי נתחיל ←</button>
+    <div class="hint">בלי תשובות נכונות או לא נכונות. רק מה שמרגיש לך.</div>
+  </section>
+
+  <!-- ========== QUIZ ========== -->
+  <section class="screen" id="quiz" aria-live="polite" aria-label="שאלון">
+    <div class="progress-row">
+      <span class="progress-label" id="progressLabel">שאלה 1 מתוך 7</span>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <h2 class="q-title" id="qTitle"></h2>
+    <ul class="options" id="optList"></ul>
+    <div class="back-row">
+      <button class="link-btn" id="backBtn" hidden>→ חזרה לשאלה הקודמת</button>
+    </div>
+  </section>
+
+  <!-- ========== RESULT + LEAD ========== -->
+  <section class="screen" id="result" aria-label="תוצאה">
+    <div class="result-card">
+      <span class="result-eyebrow">לפי התשובות שלך</span>
+      <p class="result-text" id="resultText"></p>
+      <div class="divider"></div>
+      <p class="cta-text">✨ רוצה להבין מה כרגע חוסם את העסק שלך ואיך אפשר לשנות את זה?<br><strong>השאירי פרטים לשיחת ייעוץ ראשונית.</strong></p>
+      <form id="leadForm" novalidate>
+        <label for="leadName">השם שלך</label>
+        <input type="text" id="leadName" name="name" autocomplete="name" placeholder="שם מלא" required>
+        <label for="leadPhone">טלפון</label>
+        <input type="tel" id="leadPhone" name="phone" autocomplete="tel" inputmode="tel" placeholder="050-0000000" required>
+        <input type="text" class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn" type="submit" id="leadBtn" style="margin-top:8px">אני רוצה שיחת ייעוץ</button>
+        <div class="form-status" id="formStatus" role="alert"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ========== THANKS ========== -->
+  <section class="screen" id="thanks" aria-label="תודה">
+    <div class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <h2 class="serif" id="thanksTitle">הפרטים התקבלו!</h2>
+    <p>טוהר תחזור אלייך ממש בקרוב לתיאום שיחת הייעוץ.<br>בינתיים, נשימה עמוקה. את כבר עשית את הצעד הראשון 🤍</p>
+  </section>
+
+  <footer>טוהר אקנין · תהליכי שיווק &nbsp;|&nbsp; נבנה ע״י הלל אקנין</footer>
+</div>
+
+<script>
+const FN_URL = "https://bjnerljmuwvyxsikzsti.supabase.co/functions/v1/submit-survey";
+
+const QUESTIONS = [
+  { title: "איפה העסק שלך היום?", options: [
+    "רק התחלתי, עדיין מחפשת את עצמי",
+    "יש לי שירות טוב אבל קשה לי להביא לקוחות",
+    "אני פעילה אבל לא עקבית בשיווק",
+    "יש בסיס טוב, רוצה לגדול חכם ולא להישחק" ]},
+  { title: "מה הכי עוצר אותך כרגע?", options: [
+    "פחד להיחשף",
+    "חוסר סדר ובלבול",
+    "אני לא יודעת איך לדבר לקהל שלי",
+    "אני מתעייפת מהשיווק מהר" ]},
+  { title: "איך את מרגישה מול שיווק?", options: [
+    "זה מלחיץ אותי",
+    "אני יודעת שאני חייבת אבל דוחה את זה",
+    "יש לי רעיונות אבל קשה לי להוציא לפועל",
+    "אני רוצה להבין שיווק לעומק ולא רק “להעלות פוסטים”" ]},
+  { title: "מה הכי חשוב לך לקבל?", options: [
+    "ביטחון ואומץ להתחיל",
+    "סדר ודרך ברורה",
+    "אסטרטגיה שמחוברת אליי",
+    "להבין פסיכולוגיה של אנשים ושיווק" ]},
+  { title: "איזה תוכן הכי מדבר אלייך?", options: [
+    "תוכן אותנטי ורגשי",
+    "תוכן פרקטי עם צעדים",
+    "תוכן פסיכולוגי שמפיל אסימונים",
+    "שילוב של עומק ופרקטיקה" ]},
+  { title: "אם היה לך ליווי נכון עכשיו, מה היית רוצה שיקרה?", options: [
+    "להתחיל סוף סוף לשווק בלי פחד",
+    "להרגיש שאני מבינה מה אני עושה",
+    "למשוך לקוחות בצורה מדויקת יותר",
+    "לבנות שיווק שמרגיש אמיתי ולא מתיש" ]},
+  { title: "מה גורם לך באמת להתחבר לתהליך?", options: [
+    "כשמסבירים לי פשוט וברור",
+    "כשיש לי מסגרת וסדר",
+    "כשאני מרגישה שמבינים אותי",
+    "כשמישהו הולך איתי יד ביד" ]}
+];
+
+const RESULTS = {
+  clarity: "נראה שאת לא צריכה עוד מידע.\nאת צריכה דרך ברורה, ביטחון, וחיבור לשיווק שמתאים לך באמת.",
+  emotional: "העסק שלך כנראה לא תקוע בגלל חוסר יכולת,\nאלא בגלל עומס, פחד ובלבול שמנהלים אותך במקום שתנהלי אותם."
+};
+
+const LETTERS = ["A","B","C","D"];
+const state = { current: 0, answers: {}, responseId: null, submitting: false };
+
+const $ = id => document.getElementById(id);
+const screens = { intro: $("intro"), quiz: $("quiz"), result: $("result"), thanks: $("thanks") };
+
+function show(name){
+  Object.values(screens).forEach(s => s.classList.remove("active"));
+  screens[name].classList.add("active");
+  if (name !== "intro") $("logoImg").classList.add("small");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderQuestion(){
+  const i = state.current, q = QUESTIONS[i];
+  $("progressLabel").textContent = "שאלה " + (i+1) + " מתוך " + QUESTIONS.length;
+  $("progressFill").style.width = ((i) / QUESTIONS.length * 100) + "%";
+  $("qTitle").textContent = q.title;
+  const list = $("optList");
+  list.innerHTML = "";
+  q.options.forEach((text, idx) => {
+    const letter = LETTERS[idx];
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "opt" + (state.answers["q"+(i+1)] === letter ? " selected" : "");
+    btn.innerHTML = '<span class="badge">' + letter + '</span><span>' + text + '</span>';
+    btn.addEventListener("click", () => pick(letter, btn));
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+  $("backBtn").hidden = i === 0;
+}
+
+function pick(letter, btn){
+  if (state.submitting) return;
+  state.answers["q" + (state.current+1)] = letter;
+  document.querySelectorAll(".opt").forEach(o => o.classList.remove("selected"));
+  btn.classList.add("selected");
+  state.submitting = true;            // brief lock so double-taps don't skip two questions
+  setTimeout(() => {
+    state.submitting = false;
+    if (state.current < QUESTIONS.length - 1){
+      state.current++;
+      renderQuestion();
+    } else {
+      finish();
+    }
+  }, 280);
+}
+
+function resultVariant(){
+  const emotional = (["A","B"].includes(state.answers.q2) ? 1 : 0)
+                  + (["A","B"].includes(state.answers.q3) ? 1 : 0);
+  return emotional >= 2 ? "emotional" : "clarity";
+}
+
+async function postJSON(payload){
+  const res = await fetch(FN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error("http " + res.status);
+  return res.json();
+}
+
+async function submitAnswers(){
+  const data = await postJSON({
+    action: "submit",
+    answers: state.answers,
+    result_variant: resultVariant(),
+    user_agent: navigator.userAgent,
+    referrer: document.referrer || ""
+  });
+  state.responseId = data.id;
+}
+
+function finish(){
+  $("progressFill").style.width = "100%";
+  const variant = resultVariant();
+  $("resultText").textContent = RESULTS[variant];
+  show("result");
+  // store the answers even if no lead is left
+  submitAnswers().catch(() => { /* retried on lead submit */ });
+}
+
+$("startBtn").addEventListener("click", () => { show("quiz"); renderQuestion(); });
+$("backBtn").addEventListener("click", () => {
+  if (state.current > 0){ state.current--; renderQuestion(); }
+});
+
+$("leadForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const status = $("formStatus");
+  const name = $("leadName").value.trim();
+  const phone = $("leadPhone").value.trim();
+  status.className = "form-status";
+  if (name.length < 2){ status.textContent = "נשמח לשם שלך 🙂"; status.classList.add("err"); return; }
+  if (!/^0?5\d[-\s]?\d{3}[-\s]?\d{4}$/.test(phone.replace(/[^\d\-\s]/g,"")) && !/^05\d{8}$/.test(phone.replace(/\D/g,""))){
+    status.textContent = "מספר הטלפון לא נראה תקין, נסי שוב (למשל 050-1234567)";
+    status.classList.add("err"); return;
+  }
+  const hp = document.querySelector(".hp").value;
+  const btn = $("leadBtn");
+  btn.disabled = true; status.textContent = "שולחת...";
+  try {
+    if (!state.responseId) await submitAnswers();   // retry answers if the first call failed
+    await postJSON({ action: "lead", id: state.responseId, name, phone, website: hp });
+    $("thanksTitle").textContent = "תודה, " + name.split(" ")[0] + "! הפרטים התקבלו";
+    show("thanks");
+  } catch (err) {
+    status.textContent = "משהו השתבש בשליחה. בדקי חיבור לאינטרנט ונסי שוב.";
+    status.classList.add("err");
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
